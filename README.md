@@ -49,4 +49,5 @@ A simple and beautiful web app to help you manage travel expenses. Built with HT
 
 ## 🧔 Author
 
-Created by [@YourGitHubUsername](https://github.com/YourGitHubUsername)
+Created by [@CoffeeManApp](https://github.com/CoffeeManApp)
+Donation: [@Buymeacoffee](https://buymeacoffee.com/coffeemantravel)
