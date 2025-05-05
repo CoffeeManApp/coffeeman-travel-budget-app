@@ -36,8 +36,7 @@ A simple and beautiful web app to help you manage travel expenses. Built with HT
 
 ## 🌐 Live Demo
 
-👉 [Click here to use the app](https://your-username.github.io/your-repo-name)
-
+👉 [Click here to use the app](https://coffeemanapp.github.io/coffeeman-travel-budget-app/coffeemantravelbudget.html)
 ---
 
 ## 🛠️ Tech Stack
