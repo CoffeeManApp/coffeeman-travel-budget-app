@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>COffeeMan Travel Budget App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f6fb;
+      color: #333;
+    }
+    header {
+      background-color: #2d9cdb;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .container {
+      padding: 20px;
+    }
+    h2, h3 {
+      color: #2d9cdb;
+    }
+    input, select, button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #2d9cdb;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1c7eb7;
+    }
+    .trip {
+      display: inline-block;
+      margin: 10px;
+      text-align: center;
+    }
+    .trip img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #2d9cdb;
+      transition: transform 0.2s ease;
+    }
+    .trip img:active {
+      transform: scale(0.95);
+    }
+    .trip-name {
+      margin-top: 5px;
+      font-size: 14px;
+      max-width: 80px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .back-btn {
+      display: flex;
+      align-items: center;
+      background-color: transparent;
+      color: #2d9cdb;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    .chevron-left {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-left: 3px solid #2d9cdb;
+      border-bottom: 3px solid #2d9cdb;
+      transform: rotate(45deg);
+      margin-right: 8px;
+    }
+    input[type="file"]::file-selector-button {
+      background-color: #2d9cdb;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+    }
+    input[type="file"]::file-selector-button:hover {
+      background-color: #1c7eb7;
+    }
+    .budget-box {
+      font-weight: bold;
+      margin-top: 10px;
+      background: #e1f5fe;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    canvas {
+      max-width: 100%;
+      margin-top: 10px;
+    }
+    .delete-icon {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      line-height: 20px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #e1f5fe;
+    }
+  </style>
+</head>
+<body>
+  <header>CoffeeMan Travel Budget Manager</header>
+  <div class="container" id="app">
+    <div id="trip-list-view">
+      <h2>Your Trips</h2>
+      <div id="trip-list"></div>
+      <input type="text" id="new-trip" placeholder="Enter new destination..." />
+      <input type="file" id="trip-image" accept="image/*" />
+      <button onclick="createTrip()">Add Trip</button>
+    </div>
+
+    <div id="trip-detail-view" style="display:none;">
+      <button class="back-btn" onclick="backToTrips()">
+        <span class="chevron-left"></span> Back
+      </button>
+      <h2 id="trip-title"></h2>
+
+      <div class="card">
+        <label for="currency">Currency:</label>
+        <select id="currency">
+          <option value="RM">RM</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="SGD">SGD</option>
+          <option value="THB">THB</option>
+        </select>
+        <input type="number" id="budget-input" placeholder="Set total budget" />
+        <button onclick="saveBudget()">Save Budget</button>
+        <div class="budget-box" id="remaining-budget">Remaining Budget: RM0.00</div>
+      </div>
+
+      <div class="card">
+        <h3>Add Expense</h3>
+        <input type="number" id="amount-input" placeholder="Amount" />
+        <select id="category-input">
+          <option value="Food">Food</option>
+          <option value="Hotel">Hotel</option>
+          <option value="Transport">Transport</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Other">Other</option>
+        </select>
+        <input type="text" id="note-input" placeholder="Note (optional)" />
+        <button onclick="addExpense()">Add Expense</button>
+      </div>
+
+      <div class="card">
+        <h3>Expenses</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody id="expense-table-body"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Spending Chart</h3>
+        <canvas id="chart" width="400" height="400"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    let trips = JSON.parse(localStorage.getItem("trips")) || [];
+    let currentTripIndex = null;
+    const tripListDiv = document.getElementById("trip-list");
+
+    function saveTrips() {
+      localStorage.setItem("trips", JSON.stringify(trips));
+    }
+
+    function showTrips() {
+      tripListDiv.innerHTML = "";
+      trips.forEach((trip, i) => {
+        const wrapper = document.createElement("div");
+        wrapper.style.display = "inline-block";
+        wrapper.style.position = "relative";
+
+        const div = document.createElement("div");
+        div.className = "trip";
+        const img = document.createElement("img");
+        img.src = trip.image || "https://via.placeholder.com/80x80.png?text=Trip";
+        const name = document.createElement("div");
+        name.className = "trip-name";
+        name.innerText = trip.name;
+
+        div.appendChild(img);
+        div.appendChild(name);
+        div.onclick = () => openTrip(i);
+        wrapper.appendChild(div);
+
+        const delBtn = document.createElement("div");
+        delBtn.className = "delete-icon";
+        delBtn.innerText = "X";
+        delBtn.onclick = (e) => {
+          e.stopPropagation();
+          if (confirm(`Delete "${trip.name}"?`)) {
+            trips.splice(i, 1);
+            saveTrips();
+            showTrips();
+          }
+        };
+        wrapper.appendChild(delBtn);
+
+        tripListDiv.appendChild(wrapper);
+      });
+    }
+
+    function createTrip() {
+      const name = document.getElementById("new-trip").value.trim();
+      const fileInput = document.getElementById("trip-image");
+      if (!name) return alert("Enter a trip name.");
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imageData = e.target.result;
+        trips.push({ name, image: imageData, budget: 0, currency: "RM", expenses: [] });
+        saveTrips();
+        document.getElementById("new-trip").value = "";
+        document.getElementById("trip-image").value = "";
+        showTrips();
+      };
+
+      if (fileInput.files.length > 0) {
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        trips.push({ name, image: "", budget: 0, currency: "RM", expenses: [] });
+        saveTrips();
+        document.getElementById("new-trip").value = "";
+        showTrips();
+      }
+    }
+
+    function openTrip(index) {
+      currentTripIndex = index;
+      const trip = trips[index];
+      document.getElementById("trip-list-view").style.display = "none";
+      document.getElementById("trip-detail-view").style.display = "block";
+      document.getElementById("trip-title").innerText = trip.name;
+      document.getElementById("budget-input").value = trip.budget || "";
+      document.getElementById("currency").value = trip.currency || "RM";
+      updateRemainingBudget();
+      renderExpenses();
+      renderChart();
+    }
+
+    function backToTrips() {
+      currentTripIndex = null;
+      document.getElementById("trip-detail-view").style.display = "none";
+      document.getElementById("trip-list-view").style.display = "block";
+    }
+
+    function saveBudget() {
+      const value = parseFloat(document.getElementById("budget-input").value);
+      const currency = document.getElementById("currency").value;
+      if (isNaN(value) || value < 0) return alert("Enter valid budget.");
+      trips[currentTripIndex].budget = value;
+      trips[currentTripIndex].currency = currency;
+      saveTrips();
+      updateRemainingBudget();
+      alert("Budget saved.");
+    }
+
+    function addExpense() {
+      const amount = parseFloat(document.getElementById("amount-input").value);
+      const category = document.getElementById("category-input").value;
+      const note = document.getElementById("note-input").value.trim();
+      if (isNaN(amount) || amount <= 0) return alert("Enter a valid amount.");
+      trips[currentTripIndex].expenses.push({ amount, category, note });
+      saveTrips();
+      document.getElementById("amount-input").value = "";
+      document.getElementById("note-input").value = "";
+      updateRemainingBudget();
+      renderExpenses();
+      renderChart();
+    }
+
+    function updateRemainingBudget() {
+      const trip = trips[currentTripIndex];
+      const spent = trip.expenses.reduce((sum, e) => sum + e.amount, 0);
+      const remaining = (trip.budget - spent).toFixed(2);
+      const currency = trip.currency || "RM";
+      document.getElementById("remaining-budget").innerText = `Remaining Budget: ${currency}${remaining}`;
+    }
+
+    function renderExpenses() {
+      const tbody = document.getElementById("expense-table-body");
+      tbody.innerHTML = "";
+      const trip = trips[currentTripIndex];
+      const currency = trip.currency || "RM";
+      trip.expenses.forEach(e => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${e.category}</td>
+          <td>${currency}${e.amount.toFixed(2)}</td>
+          <td>${e.note || ''}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function renderChart() {
+      const ctx = document.getElementById("chart").getContext("2d");
+      const categorySums = {};
+      trips[currentTripIndex].expenses.forEach(e => {
+        categorySums[e.category] = (categorySums[e.category] || 0) + e.amount;
+      });
+      const labels = Object.keys(categorySums);
+      const data = Object.values(categorySums);
+      if (window.pieChart) window.pieChart.destroy();
+      window.pieChart = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: ['#4FC3F7', '#81D4FA', '#29B6F6', '#0288D1', '#B3E5FC']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' }
+          }
+        }
+      });
+    }
+
+    showTrips();
+  </script>
+</body>
+</html>
