@@ -201,6 +201,7 @@
               <th>Category</th>
               <th>Amount</th>
               <th>Note</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody id="expense-table-body"></tbody>
@@ -339,20 +340,42 @@
     }
 
     function renderExpenses() {
-      const tbody = document.getElementById("expense-table-body");
-      tbody.innerHTML = "";
-      const trip = trips[currentTripIndex];
-      const currency = trip.currency || "RM";
-      trip.expenses.forEach(e => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${e.category}</td>
-          <td>${currency}${e.amount.toFixed(2)}</td>
-          <td>${e.note || ''}</td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
+  const tbody = document.getElementById("expense-table-body");
+  tbody.innerHTML = "";
+  const trip = trips[currentTripIndex];
+  const currency = trip.currency || "RM";
+
+  trip.expenses.forEach((e, i) => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${e.category}</td>
+      <td>${currency}${e.amount.toFixed(2)}</td>
+      <td>${e.note || ''}</td>
+    `;
+
+    const deleteCell = document.createElement("td");
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "❌";
+    deleteBtn.style.background = "transparent";
+    deleteBtn.style.border = "none";
+    deleteBtn.style.cursor = "pointer";
+    deleteBtn.onclick = () => {
+      if (confirm("Delete this expense?")) {
+        trip.expenses.splice(i, 1);
+        saveTrips();
+        updateRemainingBudget();
+        renderExpenses();
+        renderChart();
+      }
+    };
+
+    deleteCell.appendChild(deleteBtn);
+    row.appendChild(deleteCell);
+    tbody.appendChild(row);
+  });
+}
+
 
     function renderChart() {
       const ctx = document.getElementById("chart").getContext("2d");
