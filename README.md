@@ -34,10 +34,27 @@ A simple and beautiful web app to help you manage travel expenses. Built with HT
 
 ---
 
-## 🌐 The app
+## 🌐 The app link
 
 👉 [Click here to use the app](https://coffeemanapp.github.io/coffeeman-travel-budget-app/coffeemantravelbudget.html)
 ---
+
+📲 Add to Home Screen (For Easy Access)
+You can install this app like a native app on your phone! Here's how:
+
+✅ For iPhone (iOS Safari):
+Open this app in Safari.
+Tap the Share button (the square with the arrow).
+Scroll down and tap Add to Home Screen.
+Tap Add in the top-right corner.
+This will place the CoffeeMan Travel App on your iPhone's home screen like a regular app.
+
+✅ For Android (Chrome or Edge):
+Open this app in Google Chrome or Microsoft Edge.
+Tap the three-dot menu in the top-right corner.
+Tap Add to Home screen.
+Confirm by tapping Add.
+Now you can access your travel budget easily without opening your browser!
 
 ## 🛠️ Tech Stack
 
