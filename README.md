@@ -6,7 +6,7 @@ A simple and beautiful web app to help you manage travel expenses. Built with HT
 
 ## 🚀 Features
 
-- ✅ Create multiple trips with name and photo
+- ✅ Create multiple trips with name and photo(JPG or PNG file)
 - ✅ Set a budget and choose your currency
 - ✅ Add expenses by category (Food, Hotel, Transport, etc.)
 - ✅ View remaining budget and pie chart breakdown
