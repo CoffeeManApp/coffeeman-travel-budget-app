@@ -182,7 +182,7 @@
       <h2>Your Trips</h2>
       <div id="trip-list"></div>
       <input type="text" id="new-trip" placeholder="Enter new destination..." />
-      <input type="file" id="trip-image" accept="image/jpeg,image/png,image/*" />
+      <input type="file" id="trip-image" accept="image/jpeg,image/png,image/heic,image/heif,image/*" />
       <button onclick="createTrip()">Add Trip</button>
       <div style="margin-top: 15px; text-align: center;">
         <a href="https://www.buymeacoffee.com/coffeemantravel" target="_blank"
@@ -453,52 +453,84 @@
     }
 
     function createTrip() {
-      const name = document.getElementById("new-trip").value.trim();
-      const fileInput = document.getElementById("trip-image");
+  const name = document.getElementById("new-trip").value.trim();
+  const fileInput = document.getElementById("trip-image");
 
-      if (!name) return alert("Enter a trip name.");
+  if (!name) return alert("Enter a trip name.");
 
-      if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        const reader = new FileReader();
+  const file = fileInput.files[0];
 
-        reader.onload = function (e) {
-          const imageData = e.target.result;
-          trips.push({ name, image: imageData, budget: 0, currency: "RM", expenses: [] });
-          saveTrips();
-          document.getElementById("new-trip").value = "";
-          fileInput.value = "";
-          showTrips();
-        };
+  if (file) {
+    const reader = new FileReader();
 
-        reader.onerror = function (err) {
-          console.warn("Image preview failed. Adding trip without cover photo.", err);
-          trips.push({ name, image: "", budget: 0, currency: "RM", expenses: [] });
-          saveTrips();
-          document.getElementById("new-trip").value = "";
-          fileInput.value = "";
-          showTrips();
-        };
+    reader.onload = function(e) {
+      const imageData = e.target.result;
 
-        try {
-          reader.readAsDataURL(file);
-        } catch (err) {
-          console.warn("Could not read file. Adding trip without cover photo.", err);
-          trips.push({ name, image: "", budget: 0, currency: "RM", expenses: [] });
-          saveTrips();
-          document.getElementById("new-trip").value = "";
-          fileInput.value = "";
-          showTrips();
-        }
+      trips.push({
+        name,
+        image: imageData,
+        budget: 0,
+        currency: "RM",
+        expenses: []
+      });
 
-      } else {
-        // No file selected — just add trip with no image
-        trips.push({ name, image: "", budget: 0, currency: "RM", expenses: [] });
-        saveTrips();
-        document.getElementById("new-trip").value = "";
-        showTrips();
-      }
+      saveTrips();
+      resetTripForm();
+      showTrips();
+    };
+
+    reader.onerror = function() {
+      alert("Failed to load image. Adding trip without image.");
+      trips.push({
+        name,
+        image: "",
+        budget: 0,
+        currency: "RM",
+        expenses: []
+      });
+
+      saveTrips();
+      resetTripForm();
+      showTrips();
+    };
+
+    try {
+      reader.readAsDataURL(file);
+    } catch (err) {
+      alert("Unable to read image. Trip added without cover photo.");
+      trips.push({
+        name,
+        image: "",
+        budget: 0,
+        currency: "RM",
+        expenses: []
+      });
+
+      saveTrips();
+      resetTripForm();
+      showTrips();
     }
+
+  } else {
+    // No image file selected
+    trips.push({
+      name,
+      image: "",
+      budget: 0,
+      currency: "RM",
+      expenses: []
+    });
+
+    saveTrips();
+    resetTripForm();
+    showTrips();
+  }
+}
+
+function resetTripForm() {
+  document.getElementById("new-trip").value = "";
+  document.getElementById("trip-image").value = "";
+}
 
 
     function openTrip(index) {
