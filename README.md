@@ -1,4 +1,5 @@
-# coffeeman-travel-budget-app
+# coffeeman-travel-budget-app  
+Version 2 - updated interface design.
 
 A simple and beautiful web app to help you manage travel expenses. Built with HTML, CSS, JavaScript, and Chart.js.
 
