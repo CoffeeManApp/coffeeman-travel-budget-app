@@ -63,7 +63,7 @@ Now you can access your travel budget easily without opening your browser!
 - Chart.js for charts
 - LocalStorage for offline data saving
 
-#CoffeeMan Travel Budget Manager 迷你小程序
+# CoffeeMan Travel Budget Manager 迷你小程序
 
 一个简单又美观的网页应用，帮你轻松管理旅行开销。
 基于 HTML、CSS、JavaScript 和 Chart.js 开发。
