@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CoffeeMan Travel Split</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:rgba(255,255,255,.6);--card:rgba(255,255,255,.5);--ink:#12304A;--mute:#5B7690;--line:rgba(47,143,230,.2);--acc:#2F8FE6;--accink:#FFFFFF;--pos:#17734F;--neg:#B42318;--rim:rgba(255,255,255,.85);--shadow:0 8px 32px rgba(47,143,230,.16);--page:radial-gradient(60% 45% at 12% 0%,#BFE0FF 0%,transparent 70%),radial-gradient(55% 40% at 100% 22%,#D6EBFF 0%,transparent 70%),linear-gradient(180deg,#F3F9FF,#FFFFFF);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:rgba(255,255,255,.08);--card:rgba(255,255,255,.07);--ink:#E8F3FF;--mute:#8FAAC4;--line:rgba(255,255,255,.14);--acc:#5AB0FF;--accink:#0C1A28;--pos:#6FD6A6;--neg:#FF9C90;--rim:rgba(255,255,255,.16);--shadow:0 8px 32px rgba(0,0,0,.4);--page:radial-gradient(60% 45% at 12% 0%,#1B4B78 0%,transparent 70%),radial-gradient(55% 40% at 100% 22%,#16385A 0%,transparent 70%),linear-gradient(180deg,#0C1A28,#08121C);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:rgba(255,255,255,.08);--card:rgba(255,255,255,.07);--ink:#E8F3FF;--mute:#8FAAC4;--line:rgba(255,255,255,.14);--acc:#5AB0FF;--accink:#0C1A28;--pos:#6FD6A6;--neg:#FF9C90;--rim:rgba(255,255,255,.16);--shadow:0 8px 32px rgba(0,0,0,.4);--page:radial-gradient(60% 45% at 12% 0%,#1B4B78 0%,transparent 70%),radial-gradient(55% 40% at 100% 22%,#16385A 0%,transparent 70%),linear-gradient(180deg,#0C1A28,#08121C);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);background-attachment:fixed;min-height:100%;color:var(--ink);font:400 16px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Inter,system-ui,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:520px;margin:0 auto;padding:20px 16px 48px}
+h1{font-weight:700;font-size:30px;line-height:1.1;margin:8px 0 4px;letter-spacing:-.03em}
+h2{font-weight:600;font-size:18px;margin:0 0 10px}
+.sub{color:var(--mute);margin:0 0 20px}
+section{background:var(--card);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--rim);box-shadow:var(--shadow),inset 0 1px 0 var(--rim);border-radius:24px;padding:18px;margin-bottom:16px}
+.row{display:flex;gap:8px;align-items:center}
+input,select{font:inherit;color:var(--ink);background:var(--bg);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;padding:12px 14px;width:100%;min-width:0}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+button{font:600 16px inherit;font-family:inherit;border:0;border-radius:14px;padding:12px 18px;background:linear-gradient(180deg,#5CB2FF,#2F8FE6);color:#fff;box-shadow:0 4px 14px rgba(47,143,230,.35),inset 0 1px 0 rgba(255,255,255,.45);cursor:pointer;white-space:nowrap}
+button.ghost{background:var(--bg);box-shadow:none;color:var(--mute);padding:7px 12px;border:1px solid var(--line);font-size:14px;border-radius:99px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:5px 6px 5px 12px;font-size:15px}
+.chip button{padding:0 8px;background:none;color:var(--mute);font-size:18px;line-height:1}
+.field{margin-bottom:10px}
+label.l{display:block;font-size:14px;color:var(--mute);margin-bottom:4px}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:15px;background:var(--bg)}
+.checks input{width:auto;margin:0;accent-color:var(--acc)}
+.exp{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.exp:first-of-type{border-top:0}
+.exp small{display:block;color:var(--mute);font-size:14px}
+.amt{font-weight:600;text-align:right}
+.bal{display:flex;justify-content:space-between;padding:6px 0}
+.pos{color:var(--pos)}.neg{color:var(--neg)}
+.pay{padding:10px 12px;border-radius:10px;background:var(--bg);margin-bottom:8px;font-size:17px}
+.empty{color:var(--mute);margin:0}
+.err{color:var(--neg);font-size:14px;margin:6px 0 0;min-height:1em}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.cur{width:118px}
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <div>
+      <h1>☕ CoffeeMan Travel Split</h1>
+      <p class="sub">Log who paid, see who owes who.</p>
+    </div>
+    <div class="row" style="flex-shrink:0"><button id="theme" class="ghost" aria-label="Switch light or dark mode" style="font-size:18px;padding:8px 12px">🌙</button><select id="cur" class="cur" aria-label="Currency"><option value="RM">RM · MYR</option><option value="S$">S$ · SGD</option><option value="฿">฿ · THB</option><option value="Rp">Rp · IDR</option><option value="$">$ · USD</option><option value="A$">A$ · AUD</option><option value="€">€ · EUR</option><option value="£">£ · GBP</option><option value="¥">¥ · JPY</option><option value="₩">₩ · KRW</option><option value="HK$">HK$ · HKD</option><option value="₱">₱ · PHP</option><option value="₫">₫ · VND</option></select></div>
+  </div>
+
+  <section>
+    <h2>Trip</h2><select id="trip" aria-label="Choose trip"></select><div class="row" style="margin-top:8px"><input id="tname" placeholder="Trip name (e.g. Langkawi)" maxlength="30" autocomplete="off"><button id="newt">New</button></div><div class="row" style="margin-top:8px"><button id="rent" class="ghost">Rename current</button><button id="delt" class="ghost">Delete trip</button></div><h2 style="margin-top:18px">Who’s on the trip</h2>
+    <div class="row"><input id="pname" placeholder="Add a name" maxlength="20" autocomplete="off"><button id="addp">Add</button></div>
+    <div class="chips" id="people"></div>
+  </section>
+
+  <section id="expform">
+    <h2>Add an expense</h2>
+    <div class="field"><input id="desc" placeholder="What was it? (dinner, taxi, hotel)" maxlength="40" autocomplete="off"></div>
+    <div class="row field">
+      <input id="amount" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Amount">
+      <select id="payer" aria-label="Paid by"></select>
+    </div>
+    <div class="field"><label class="l">Split between</label><div class="checks" id="split"></div></div>
+    <button id="adde" style="width:100%">Add expense</button>
+    <p class="err" id="err" role="alert"></p>
+  </section>
+
+  <section>
+    <h2>Expenses</h2>
+    <div id="exps"></div>
+  </section>
+
+  <section>
+    <h2>Balances</h2>
+    <div id="bals"></div>
+  </section>
+
+  <section>
+    <h2>Settle up</h2>
+    <div id="pays"></div>
+    <div class="row" style="margin-top:12px"><button id="copy" style="flex:1">Copy summary</button><button id="reset" class="ghost">Start over</button></div>
+  </section>
+</main>
+
+<script>
+(function(){
+var KEY="tripsplit-v1";
+var KEY2="tripsplit-v2";
+function newTrip(n,c){return {id:uid(),name:n,people:[],expenses:[],cur:c||"RM"};}
+var DB={trips:[],active:null},S;
+try{var raw2=localStorage.getItem(KEY2);if(raw2){var q=JSON.parse(raw2);if(q&&Array.isArray(q.trips)&&q.trips.length)DB=q;}else{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&Array.isArray(p.people)&&Array.isArray(p.expenses)){var t0=newTrip("My trip",p.cur);t0.people=p.people;t0.expenses=p.expenses;DB.trips=[t0];}}}}catch(e){}
+if(!DB.trips.length)DB.trips=[newTrip("My first trip")];
+function pick(id){S=DB.trips.filter(function(t){return t.id===id;})[0]||DB.trips[0];DB.active=S.id;S.cur=S.cur||"RM";}
+pick(DB.active);
+
+function save(){try{localStorage.setItem(KEY2,JSON.stringify(DB));}catch(e){}}
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function money(n){var zero=["¥","₩","Rp","₫"].indexOf(S.cur)>-1;var v=Math.abs(n);return S.cur+(zero?Math.round(v).toLocaleString():v.toFixed(2));}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function name(id){var p=S.people.filter(function(x){return x.id===id;})[0];return p?p.name:"Removed";}
+
+function balances(){
+  var b={};S.people.forEach(function(p){b[p.id]=0;});
+  S.expenses.forEach(function(e){
+    var who=e.split.filter(function(id){return id in b;});
+    if(!who.length||!(e.payer in b))return;
+    var share=e.amount/who.length;
+    b[e.payer]+=e.amount;
+    who.forEach(function(id){b[id]-=share;});
+  });
+  return b;
+}
+function settle(b){
+  var d=[],c=[];
+  Object.keys(b).forEach(function(id){var v=Math.round(b[id]*100)/100;if(v<-0.005)d.push({id:id,v:-v});else if(v>0.005)c.push({id:id,v:v});});
+  d.sort(function(a,b){return b.v-a.v;});c.sort(function(a,b){return b.v-a.v;});
+  var out=[],i=0,j=0;
+  while(i<d.length&&j<c.length){
+    var amt=Math.min(d[i].v,c[j].v);
+    out.push({from:d[i].id,to:c[j].id,amt:amt});
+    d[i].v-=amt;c[j].v-=amt;
+    if(d[i].v<0.005)i++;
+    if(c[j].v<0.005)j++;
+  }
+  return out;
+}
+
+function render(){
+  $("cur").value=S.cur;$("trip").innerHTML=DB.trips.map(function(t){return '<option value="'+t.id+'">'+esc(t.name)+'</option>';}).join("");$("trip").value=S.id;
+  $("people").innerHTML=S.people.length?S.people.map(function(p){return '<span class="chip">'+esc(p.name)+'<button data-rm="'+p.id+'" aria-label="Remove '+esc(p.name)+'">×</button></span>';}).join(""):'<p class="empty">Add at least two people to start.</p>';
+  var prev=$("payer").value;
+  $("payer").innerHTML=S.people.map(function(p){return '<option value="'+p.id+'">Paid by '+esc(p.name)+'</option>';}).join("");
+  if(prev)$("payer").value=prev;
+  var checked={};Array.prototype.forEach.call(document.querySelectorAll("#split input"),function(i){checked[i.value]=i.checked;});
+  $("split").innerHTML=S.people.map(function(p){var on=(p.id in checked)?checked[p.id]:true;return '<label><input type="checkbox" value="'+p.id+'"'+(on?' checked':'')+'>'+esc(p.name)+'</label>';}).join("");
+  $("exps").innerHTML=S.expenses.length?S.expenses.slice().reverse().map(function(e){
+    var n=e.split.length;
+    return '<div class="exp"><div>'+esc(e.desc)+'<small>'+esc(name(e.payer))+' paid · split '+(n===S.people.length?'everyone':n+' ways')+'</small></div><div class="amt">'+money(e.amount)+'<br><button class="ghost" data-del="'+e.id+'">Delete</button></div></div>';
+  }).join(""):'<p class="empty">No expenses yet. Add the first one above.</p>';
+  var b=balances();
+  $("bals").innerHTML=S.people.length?S.people.map(function(p){
+    var v=Math.round(b[p.id]*100)/100;
+    return '<div class="bal"><span>'+esc(p.name)+'</span><span class="'+(v>0.005?'pos':v<-0.005?'neg':'')+'">'+(v>0.005?'gets back '+money(v):v<-0.005?'owes '+money(v):'all square')+'</span></div>';
+  }).join(""):'<p class="empty">Balances show up once you add people.</p>';
+  var pays=settle(b);
+  $("pays").innerHTML=pays.length?pays.map(function(x){return '<div class="pay"><b>'+esc(name(x.from))+'</b> pays <b>'+esc(name(x.to))+'</b> '+money(x.amt)+'</div>';}).join(""):'<p class="empty">Nobody owes anything yet.</p>';
+}
+
+function addPerson(){
+  var v=$("pname").value.trim();
+  if(!v)return;
+  if(S.people.some(function(p){return p.name.toLowerCase()===v.toLowerCase();})){$("pname").value="";return;}
+  S.people.push({id:uid(),name:v});$("pname").value="";save();render();
+}
+$("addp").onclick=addPerson;
+$("pname").addEventListener("keydown",function(e){if(e.key==="Enter")addPerson();});
+$("people").onclick=function(e){
+  var id=e.target.getAttribute("data-rm");if(!id)return;
+  var used=S.expenses.some(function(x){return x.payer===id||x.split.indexOf(id)>-1;});
+  if(used&&!confirm("This person is in existing expenses. Remove them and those expenses?"))return;
+  S.people=S.people.filter(function(p){return p.id!==id;});
+  S.expenses=S.expenses.filter(function(x){return x.payer!==id&&x.split.indexOf(id)===-1;});
+  save();render();
+};
+$("adde").onclick=function(){
+  var desc=$("desc").value.trim(),amt=parseFloat($("amount").value),payer=$("payer").value;
+  var split=Array.prototype.filter.call(document.querySelectorAll("#split input"),function(i){return i.checked;}).map(function(i){return i.value;});
+  var err="";
+  if(S.people.length<2)err="Add at least two people first.";
+  else if(!desc)err="Add a short description.";
+  else if(!(amt>0))err="Enter an amount greater than 0.";
+  else if(!split.length)err="Pick at least one person to split with.";
+  $("err").textContent=err;if(err)return;
+  S.expenses.push({id:uid(),desc:desc,amount:Math.round(amt*100)/100,payer:payer,split:split});
+  $("desc").value="";$("amount").value="";save();render();
+};
+$("exps").onclick=function(e){
+  var id=e.target.getAttribute("data-del");if(!id)return;
+  S.expenses=S.expenses.filter(function(x){return x.id!==id;});save();render();
+};
+$("cur").onchange=function(){S.cur=$("cur").value;save();render();};
+$("copy").onclick=function(){
+  var pays=settle(balances());
+  var total=S.expenses.reduce(function(s,e){return s+e.amount;},0);
+  var t="Trip total: "+money(total)+"\n"+(pays.length?pays.map(function(x){return name(x.from)+" pays "+name(x.to)+" "+money(x.amt);}).join("\n"):"Everyone’s square.");
+  var done=function(){$("copy").textContent="Copied";setTimeout(function(){$("copy").textContent="Copy summary";},1500);};
+  try{navigator.clipboard.writeText(t).then(done,function(){prompt("Copy this summary:",t);});}catch(e){prompt("Copy this summary:",t);}
+};
+$("reset").onclick=function(){if(confirm("Clear everyone and every expense in this trip?")){S.people=[];S.expenses=[];save();render();}};
+var TK="coffeeman-theme";
+function sysDark(){return !!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);}
+function curTheme(){return document.documentElement.getAttribute("data-theme")||(sysDark()?"dark":"light");}
+function paintTheme(){$("theme").textContent=curTheme()==="dark"?"☀️":"🌙";}
+try{var st=localStorage.getItem(TK);if(st==="dark"||st==="light")document.documentElement.setAttribute("data-theme",st);}catch(e){}
+$("theme").onclick=function(){var n=curTheme()==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",n);try{localStorage.setItem(TK,n);}catch(e){}paintTheme();};
+paintTheme();
+$("trip").onchange=function(){pick($("trip").value);save();render();};
+$("newt").onclick=function(){var n=$("tname").value.trim().slice(0,30)||"Trip "+(DB.trips.length+1);var t=newTrip(n,S.cur);DB.trips.push(t);pick(t.id);$("tname").value="";save();render();};
+$("rent").onclick=function(){var n=$("tname").value.trim().slice(0,30);if(!n){$("tname").focus();return;}S.name=n;$("tname").value="";save();render();};
+var delArm=0;
+$("delt").onclick=function(){
+ if(DB.trips.length<2){$("delt").textContent="Keep at least 1 trip";setTimeout(function(){$("delt").textContent="Delete trip";},1800);return;}
+ if(!delArm){delArm=1;$("delt").textContent="Tap again to delete";setTimeout(function(){delArm=0;$("delt").textContent="Delete trip";},2500);return;}
+ delArm=0;$("delt").textContent="Delete trip";
+ DB.trips=DB.trips.filter(function(t){return t.id!==S.id;});pick(DB.trips[0].id);save();render();
+};
+render();
+})();
+</script>
+</body>
+</html>
